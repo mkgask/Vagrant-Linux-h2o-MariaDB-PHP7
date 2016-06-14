@@ -32,3 +32,5 @@ Usage:
     ```
 
 If h2o and php-fpm is not connected, restart the service h2o and php-fpm.
+
+require [Itamae](https://github.com/itamae-kitchen/itamae) simple and lightweight configuration management tool.
