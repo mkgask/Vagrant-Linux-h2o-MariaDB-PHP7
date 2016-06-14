@@ -1,0 +1,16 @@
+[Unit]
+Description=H2O optimized HTTP server
+
+[Service]
+Type=forking
+PIDFile=/var/run/h2o/h2o.pid
+ExecStartPre=-/usr/bin/mkdir -p /var/run/h2o /var/log/h2o
+ExecStartPre=-/usr/bin/chown USERNAME:USERNAME /var/run/h2o /var/log/h2o
+ExecStartPre=/usr/local/bin/h2o -c /etc/h2o/h2o.conf -t
+ExecStart=/usr/local/bin/h2o -c /etc/h2o/h2o.conf -m daemon
+ExecReload=/usr/bin/kill -HUP $MAINPID
+ExecStop=/usr/bin/kill -s QUIT $MAINPID
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
