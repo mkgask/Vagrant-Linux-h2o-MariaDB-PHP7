@@ -48,7 +48,7 @@ end
 
 execute 'mysqlenv settings' do
     command <<-"EOH"
-sed -i 's|http://downloads\.maiadb\.org.\+#{mysql_version}.tar.gz$|https://downloads.mariadb.org/interstitial/#{mysql_version}/source/#{mysql_version}.tar.gz|' #{dir_user_home}.mysqlenv/mysql-build/share/mysql-bulid/definitions/#{mysql_version}
+sed -i 's|http://archive\.maiadb\.org.\+#{mysql_version}\.tar\.gz|https://downloads.mariadb.org/interstitial/#{mysql_version}/source/#{mysql_version}.tar.gz|' #{dir_user_home}.mysqlenv/mysql-build/share/mysql-bulid/definitions/#{mysql_version}
 export PATH=#{dir_user_home}.mysqlenv:$PATH; eval "$(mysqlenv init -)"; mysqlenv install #{mysql_version}
 export PATH=#{dir_user_home}.mysqlenv:$PATH; eval "$(mysqlenv init -)"; mysqlenv global #{mysql_version}
 EOH
