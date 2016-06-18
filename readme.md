@@ -28,7 +28,7 @@ Usage:
 
 4. itamae ssh  
     ```
-    itamae ssh -h 192.168.33.22 -u vagrant --node-yaml=itamae/roles/dev/env.yml itamae/roles/dev/setup.rb
+    itamae ssh -h 192.168.33.10 -u vagrant --node-yaml=itamae/roles/dev/env.yml itamae/roles/dev/setup.rb
     ```
 
 If h2o and php-fpm is not connected, restart the service h2o and php-fpm.
