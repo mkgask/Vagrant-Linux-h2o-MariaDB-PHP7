@@ -15,5 +15,5 @@ if node[:php] then
 end
 
 if node[:mysql] then
-    #include_recipe path_recipe_base + 'mysql/install.rb'
+    include_recipe path_recipe_base + 'mysql/install.rb'
 end
