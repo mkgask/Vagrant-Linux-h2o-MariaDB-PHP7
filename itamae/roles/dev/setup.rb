@@ -3,6 +3,7 @@
 path_recipe_base = '../../cookbooks/'
 
 puts 'os: default setup'
+include_recipe path_recipe_base + 'os/port-settings-ubuntu_trusty.rb'
 include_recipe path_recipe_base + 'os/set-timezone.rb'
 include_recipe path_recipe_base + 'os/update-upgrade.rb'
 
