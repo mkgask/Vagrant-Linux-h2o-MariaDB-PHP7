@@ -1,49 +1,67 @@
-dir_user_home = node[:dir_user_home]
-unless dir_user_home.end_with?("/") then
-    dir_user_home << '/'
+#!/usr/bin/ruby
+
+if node[:dir_user_home].nil? || node[:dir_user_home].empty?
+    dir_user_home = '/home/vagrant'
+else
+    dir_user_home = node[:dir_user_home]
+    unless dir_user_home.end_with?("/") then
+        dir_user_home << '/'
+    end
 end
 
-dir_tmp = node[:dir_tmp]
-if dir_tmp.end_with?("/") then
-    dir_tmp = dir_tmp.slice(0, dir_tmp.length - 1)
+if node[:dir_tmp].nil? || node[:dir_tmp].empty?
+    dir_tmp = '/tmp'
+else
+    dir_tmp = node[:dir_tmp]
+    if dir_tmp.end_with?("/") then
+        dir_tmp = dir_tmp.slice(0, dir_tmp.length - 1)
+    end
 end
 
-php_version = '7.0.7'
-if node.has_key?("optional") && node[:optional].has_key?("php_version") && node[:optional][php_version] then
-    php_version = node[:optional][php_version]
+if node[:php][:version].nil? || node[:php][:version].empty?
+    php_version = 'master'
+else
+    php_version = node[:php][:version]
 end
 
-php_user = 'www-data'
-if node.has_key?("optional") && node[:optional].has_key?("php_user") && node[:optional][php_user] then
-    php_user = node[:optional][php_user]
+if node[:php][:user].nil? || node[:php][:user].empty?
+    php_user = 'nobody'
+else
+    php_user = node[:php][:user]
 end
 
-php_group = 'www-data'
-if node.has_key?("optional") && node[:optional].has_key?("php_group") && node[:optional][php_group] then
-    php_group = node[:optional][php_group]
+if node[:php][:group].nil? || node[:php][:group].empty?
+    php_group = 'nobody'
+else
+    php_group = node[:php][:group]
 end
 
-php_fpm_pid = '/var/run/php-fpm.pid'
-if node.has_key?("optional") && node[:optional].has_key?("php_fpm_pid") && node[:optional][php_fpm_pid] then
-    php_fpm_pid = node[:optional][php_fpm_pidphp_fpm_pid]
+if node[:php][:pid].nil? || node[:php][:pid].empty?
+    php_pid = '/var/run/php-fpm.pid'
+else
+    php_pid = node[:php][:pid]
 end
 
-php_daemonize = 'yes'
-if node.has_key?("optional") && node[:optional].has_key?("php_daemonize") && node[:optional][php_daemonize] then
-    php_daemonize = node[:optional][php_daemonize]
+if node[:php][:daemonize].nil? || node[:php][:daemonize].empty?
+    php_daemonize = 'no'
+else
+    php_daemonize = node[:php][:daemonize]
 end
 
-php_expose_php = 'Off'
-if node.has_key?("optional") && node[:optional].has_key?("php_expose_php") && node[:optional][php_expose_php] then
-    php_expose_php = node[:optional][php_expose_php]
+if node[:php][:expose_php].nil? || node[:php][:expose_php].empty?
+    php_expose_php = 'On'
+else
+    php_expose_php = node[:php][:expose_php]
 end
 
-puts "php70: install #{php_version} for Debian/Jessie (use command 'systemctl')"
-puts "php70: php-fpm exec user: #{php_user}"
-puts "php70: php-fpm exec group: #{php_group}"
-puts "php70: php-fpm pid path: #{php_fpm_pid}"
-puts "php70: php-fpm daemonize: #{php_daemonize}"
-puts "php70: send php version in http header: #{php_expose_php}"
+puts "php: dir_user_home: #{dir_user_home}"
+puts "php: dir_tmp: #{dir_tmp}"
+puts "php: install #{php_version} for Debian/Jessie (use command 'systemctl')"
+puts "php: php-fpm exec user: #{php_user}"
+puts "php: php-fpm exec group: #{php_group}"
+puts "php: php-fpm pid path: #{php_fpm_pid}"
+puts "php: php-fpm daemonize: #{php_daemonize}"
+puts "php: send php version in http header: #{php_expose_php}"
 
 %w(git autoconf automake libtool make wget bison flex re2c libjpeg-dev libpng12-dev libxml2-dev libbz2-dev libmcrypt-dev libssl-dev libcurl4-openssl-dev libreadline6-dev libtidy-dev libxslt-dev pkg-config).each do |pkg|
     package pkg
@@ -104,4 +122,9 @@ sed -i 's%--nodaemonize%%' #{dir_tmp}/php-build/source/#{php_version}/sapi/fpm/p
 cp #{dir_tmp}/php-build/source/#{php_version}/sapi/fpm/php-fpm.service.edit /etc/systemd/system/php-fpm.service
 EOH
     not_if "ls -la /usr/lib/systemd/system |grep php-fpm.service"
+end
+
+service 'php-fpm' do
+    action :start
+    only_if 'service php-fpm status |grep stopped'
 end
