@@ -14,7 +14,7 @@ Usage:
 
 1. Git clone this repository  
     ``` 
-    git clone https://github.com/mkgask/Vagrant-Linux-h2o-MariaDB-PHP7.git  
+    git clone https://github.com/mkgask/vlhmp.git  
     ```  
     (If the git repository is not required, the zip or tar.gz file download & unzip)
 
