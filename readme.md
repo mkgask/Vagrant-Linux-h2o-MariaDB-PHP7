@@ -26,10 +26,12 @@ Usage:
     vagrant up
     ```
 
-4. itamae ssh  
+4. Execute Itamae ssh  
     ```
-    itamae ssh -h 192.168.33.10 -u vagrant --node-yaml=itamae/roles/dev/env.yml itamae/roles/dev/setup.rb
+    itamae ssh -h 192.168.33.10 -u vagrant -y=itamae/roles/dev/env.yml itamae/roles/dev/setup.rb
     ```
+
+5. Get a coffee and snack break time, because take a long time execute.
 
 If h2o and php-fpm is not connected, restart the service h2o and php-fpm.
 
