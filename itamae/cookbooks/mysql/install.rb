@@ -28,7 +28,7 @@ puts "mysql: dir_user_home: #{dir_user_home}"
 puts "mysql: dir_tmp: #{dir_tmp}"
 puts "mysql: install #{mysql_version}"
 
-%w(mysql-client build-essential dpkg-dev devscripts hardening-wrapper autoconf automake1.9 autotools-dev binutils bison chrpath debhelper doxygen dpatch dvipdfmx fakeroot fontconfig-config g++ gawk gcc gettext ghostscript ghostscript-x gsfonts html2text intltool-debian libc6-dev libcroco3 libcups2 libcupsimage2 libfontconfig1 libfontenc1 libfreetype6 libgomp1 libice6 libjpeg62 libltdl7 libltdl7-dev libmail-sendmail-perl libncurses5-dev libpaper-utils libpaper1 libpng12-0 libsm6 libsys-hostname-long-perl libtool libwrap0-dev libxaw7 libxfont1 libxmu6 libxpm4 libxt6 linux-libc-dev lmodern m4 make patchutils po-debconf tex-common texlive-base texlive-base-bin texlive-latex-base texlive-latex-base-doc ttf-dejavu ttf-dejavu-core ttf-dejavu-extra xfonts-encodings xfonts-utils zlib1g-dev).each do |pkg|
+%w(cmake mysql-client build-essential dpkg-dev devscripts hardening-wrapper autoconf automake1.9 autotools-dev binutils bison chrpath debhelper doxygen dpatch dvipdfmx fakeroot fontconfig-config g++ gawk gcc gettext ghostscript ghostscript-x gsfonts html2text intltool-debian libc6-dev libcroco3 libcups2 libcupsimage2 libfontconfig1 libfontenc1 libfreetype6 libgomp1 libice6 libjpeg62 libltdl7 libltdl7-dev libmail-sendmail-perl libncurses5-dev libpaper-utils libpaper1 libpng12-0 libsm6 libsys-hostname-long-perl libtool libwrap0-dev libxaw7 libxfont1 libxmu6 libxpm4 libxt6 linux-libc-dev lmodern m4 make patchutils po-debconf tex-common texlive-base texlive-base-bin texlive-latex-base texlive-latex-base-doc ttf-dejavu ttf-dejavu-core ttf-dejavu-extra xfonts-encodings xfonts-utils zlib1g-dev).each do |pkg|
     package pkg
 end
 
@@ -65,4 +65,9 @@ sed -i 's|http://archive\.mariadb\.org.\+#{mysql_version}\.tar\.gz|https://downl
 export PATH=#{dir_user_home}.mysqlenv:$PATH; eval "$(mysqlenv init -)"; mysqlenv install #{mysql_version}
 export PATH=#{dir_user_home}.mysqlenv:$PATH; eval "$(mysqlenv init -)"; mysqlenv global #{mysql_version}
 EOH
+end
+
+service 'mysql' do
+    action :start
+    only_if 'service mysql status |grep stopped'
 end
