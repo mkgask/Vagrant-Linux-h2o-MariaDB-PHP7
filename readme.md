@@ -1,4 +1,4 @@
-# Vagrant-Linux-h2o-MariaDB-PHP7
+# Vagrant-Linux-h2o-mysqlenv-phpenv
 
 | type | value |
 |------|-------|
@@ -6,8 +6,8 @@
 | Supported OS | Ubuntu/Trusty or Debian/Jessie |
 | | (If you want to use Ubuntu/Xenial, maybe same settings Debian/Jessie. Not yet confirmed) |
 | front | h2o web server |
-| app   | php7 |
-| db    | MariaDB |
+| app   | phpenv (default:php7.0.7) |
+| db    | mysqlenv (default:mariadb-10.1.13) |
 
 
 Usage:
