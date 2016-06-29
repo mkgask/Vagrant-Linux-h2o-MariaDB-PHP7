@@ -126,3 +126,10 @@ service 'php-fpm' do
     action :start
     only_if 'service php-fpm status 2>&1 |grep stopped'
 end
+
+execute 'php-fpm: auto service start settings' do
+    command <<-"EOH"
+sysv-rc-conf php-fpm on
+EOH
+    not_if 'sysv-rc-conf --list |grep php-fpm.*2:on'
+end

@@ -92,3 +92,10 @@ service 'h2o' do
     action :start
     only_if 'service h2o status 2>&1 |grep stopped'
 end
+
+execute 'h2o: auto service start settings' do
+    command <<-"EOH"
+sysv-rc-conf h2o on
+EOH
+    not_if 'sysv-rc-conf --list |grep h2o.*2:on'
+end

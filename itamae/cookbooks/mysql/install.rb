@@ -109,3 +109,10 @@ service 'mysql' do
     action :start
     only_if 'service mysql status 2>&1 |grep stopped'
 end
+
+execute 'mysql: auto service start settings' do
+    command <<-"EOH"
+sysv-rc-conf mysql on
+EOH
+    not_if 'sysv-rc-conf --list |grep mysql.*2:on'
+end
