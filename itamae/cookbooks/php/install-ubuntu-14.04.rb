@@ -90,7 +90,7 @@ EOH
     not_if "ls -la #{dir_user_home}.phpenv/plugins |grep php-build"
 end
 
-execute "install php #{php_version}" do
+execute 'php70 path settings' do
     command <<-"EOH"
 cd #{dir_user_home}
 export PATH="#{dir_user_home}.phpenv/bin:$PATH"; eval "$(phpenv init -)"; phpenv install #{php_version}
@@ -124,5 +124,5 @@ end
 
 service 'php-fpm' do
     action :start
-    only_if 'service php-fpm status 2>&1 |grep stopped'
+    only_if 'service php-fpm status |grep stopped'
 end

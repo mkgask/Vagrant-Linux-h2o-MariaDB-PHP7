@@ -89,17 +89,17 @@ mkdir -p #{dir_user_home}.phpenv/plugins
 mv php-build-master #{dir_user_home}.phpenv/plugins/php-build
 EOH
     user 'vagrant'
-    not_if "ls #{dir_user_home}.phpenv/plugins |grep php-build"
+    not_if "ls -la #{dir_user_home}.phpenv/plugins |grep php-build"
 end
 
-execute 'install php #{php_version}' do
+execute 'build php70' do
     command <<-"EOH"
 cd #{dir_user_home}
 export PATH="#{dir_user_home}.phpenv/bin:$PATH"; eval "$(phpenv init -)"; phpenv install #{php_version}
 export PATH="#{dir_user_home}.phpenv/bin:$PATH"; eval "$(phpenv init -)"; phpenv global #{php_version}
 EOH
     user 'vagrant'
-    not_if "ls #{dir_user_home}.phpenv/versions |grep #{php_version}"
+    not_if "ls -la #{dir_user_home}.phpenv/versions |grep #{php_version}"
 end
 
 execute 'php-fpm settings' do
@@ -126,5 +126,5 @@ end
 
 service 'php-fpm' do
     action :start
-    only_if 'service php-fpm status 2>&1 |grep stopped'
+    only_if 'service php-fpm status |grep stopped'
 end
