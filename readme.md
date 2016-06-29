@@ -6,15 +6,15 @@
 | Supported OS | Ubuntu/Trusty or Debian/Jessie |
 | | (If you want to use Ubuntu/Xenial, maybe same settings Debian/Jessie. Not yet confirmed) |
 | front | h2o web server |
-| app   | phpenv (default:php7.0.7) |
-| db    | mysqlenv (default:mariadb-10.1.13) |
+| app   | [phpenv](https://github.com/madumlao/phpenv) (default:php7.0.7) |
+| db    | [mysqlenv](https://github.com/shim0mura/mysqlenv) (default:mariadb-10.1.13) |
 
 
 Usage:
 
 1. Git clone this repository  
     ``` 
-    git clone https://github.com/mkgask/vlhmp.git  
+    git clone [https://github.com/mkgask/vlhmp.git](https://github.com/mkgask/vlhmp.git)  
     ```  
     (If the git repository is not required, the zip or tar.gz file download & unzip)
 
