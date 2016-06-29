@@ -63,7 +63,7 @@ execute 'change mariadb dl url' do
     command <<-"EOH"
 sed -i 's|http://archive\.mariadb\.org.\+#{mysql_version}\.tar\.gz|https://downloads.mariadb.org/interstitial/#{mysql_version}/source/#{mysql_version}.tar.gz|' #{dir_user_home}.mysqlenv/mysql-build/share/mysql-bulid/definitions/#{mysql_version}
 EOH
-    not_if 'cat #{dir_user_home}.mysqlenv/mysql-build/share/mysql-bulid/definitions/#{mysql_version} |grep downloads.mariadb.org'
+    not_if "cat #{dir_user_home}.mysqlenv/mysql-build/share/mysql-bulid/definitions/#{mysql_version} |grep downloads.mariadb.org"
 end
 
 execute 'mysqlenv settings' do
