@@ -12,6 +12,7 @@ puts 'os: default setup'
 install 'os', port_settings_filenames, path_recipe_base
 include_recipe path_recipe_base + 'os/set-timezone.rb'
 include_recipe path_recipe_base + 'os/update-upgrade.rb'
+include_resipe path_recipe_base + 'os/install-default-package.rb'
 
 if node[:h2o] then
     install 'h2o', setup_filenames, path_recipe_base
