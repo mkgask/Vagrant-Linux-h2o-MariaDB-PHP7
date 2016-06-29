@@ -91,12 +91,17 @@ EOH
     not_if 'ls /etc/init.d |grep mysql'
 end
 
-group 'mysql' do
+execute 'os group setting: mysql' do
+    command <<-"EOH"
+groupadd mysql
+EOH
     not_if 'cat /etc/group |grep mysql'
 end
 
-user 'mysql' do
-    group 'mysql'
+execute 'os user setting: mysql' do
+    command <<-"EOH"
+useradd -g mysql mysql
+EOH
     not_if 'cat /etc/passwd |grep mysql'
 end
 
