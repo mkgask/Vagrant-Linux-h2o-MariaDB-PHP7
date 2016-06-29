@@ -59,26 +59,6 @@ EOH
     not_if "ls -la #{dir_user_home}.mysqlenv/mysql-build |grep bin"
 end
 
-execute 'mysql groupadd' do
-    command <<-"EOH"
-groupadd mysql
-EOH
-    not_if 'cat /etc/group |grep mysql'
-end
-
-execute 'mysql useradd' do
-    command <<-"EOH"
-useradd -g mysql mysql
-EOH
-    not_if 'cat /etc/passwd |grep mysql'
-end
-
-execute 'mysql chown' do
-    command <<-"EOH"
-chown -R mysql:mysql #{dir_user_home}.mysqlenv/opts
-EOH
-end
-
 execute 'change mariadb dl url' do
     command <<-"EOH"
 sed -i 's|http://archive\.mariadb\.org.\+#{mysql_version}\.tar\.gz|https://downloads.mariadb.org/interstitial/#{mysql_version}/source/#{mysql_version}.tar.gz|' #{dir_user_home}.mysqlenv/mysql-build/share/mysql-bulid/definitions/#{mysql_version}
@@ -96,6 +76,8 @@ end
 execute 'set my.cnf' do
     command <<-"EOH"
 sed -i 's|^log-bin=mysql-bin$|log-bin=#{dir_user_home}.mysqlenv/opts/data/#{mysql_version}|' #{dir_user_home}.mysqlenv/versions/#{mysql_version}/my.cnf
+sed -i 's|/tmp/mysql\.sock$|#{dir_user_home}.mysqlenv/opts/socket/#{mysql_version}/mysqld.sock|' #{dir_user_home}.mysqlenv/versions/#{mysql_version}/my.cnf
+sed -i '/^\[mysqld\]$/a bind_address=127.0.0.1' #{dir_user_home}.mysqlenv/versions/#{mysql_version}/my.cnf
 cp /etc/mysql/my.cnf /etc/mysql/my.cnf.original
 cp #{dir_user_home}.mysqlenv/versions/#{mysql_version}/my.cnf /etc/mysql/my.cnf
 EOH
@@ -109,7 +91,21 @@ EOH
     not_if 'ls /etc/init.d |grep mysql'
 end
 
+group 'mysql' do
+    not_if 'cat /etc/group |grep mysql'
+end
+
+user 'mysql' do
+    group 'mysql'
+    not_if 'cat /etc/passwd |grep mysql'
+end
+
+directory "#{dir_user_home}.mysqlenv/opts" do
+    group 'mysql'
+    owner 'mysql'
+end
+
 service 'mysql' do
     action :start
-    only_if 'service mysql status |grep stopped'
+    only_if 'service mysql status 2>&1 |grep stopped'
 end
