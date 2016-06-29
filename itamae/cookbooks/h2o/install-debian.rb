@@ -90,5 +90,5 @@ end
 
 service 'h2o' do
     action :start
-    only_if 'service h2o status |grep stopped'
+    only_if 'service h2o status 2>&1 |grep stopped'
 end

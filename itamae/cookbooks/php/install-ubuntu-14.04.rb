@@ -124,5 +124,5 @@ end
 
 service 'php-fpm' do
     action :start
-    only_if 'service php-fpm status |grep stopped'
+    only_if 'service php-fpm status 2>&1 |grep stopped'
 end
