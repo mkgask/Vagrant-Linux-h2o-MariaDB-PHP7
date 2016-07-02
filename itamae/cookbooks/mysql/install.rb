@@ -70,6 +70,7 @@ execute 'mysqlenv settings' do
     command <<-"EOH"
 export PATH=#{dir_user_home}.mysqlenv:$PATH; eval "$(mysqlenv init -)"; mysqlenv install #{mysql_version}
 export PATH=#{dir_user_home}.mysqlenv:$PATH; eval "$(mysqlenv init -)"; mysqlenv global #{mysql_version}
+chown -R vagrant:vagrant #{dir_user_home}.mysqlenv
 EOH
 end
 
