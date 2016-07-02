@@ -95,6 +95,7 @@ execute 'php70 path settings' do
 cd #{dir_user_home}
 export PATH="#{dir_user_home}.phpenv/bin:$PATH"; eval "$(phpenv init -)"; phpenv install #{php_version}
 export PATH="#{dir_user_home}.phpenv/bin:$PATH"; eval "$(phpenv init -)"; phpenv global #{php_version}
+chown -R vagrant:vagrant #{dir_user_home}.phpenv
 EOH
     not_if "ls -la #{dir_user_home}.phpenv/versions |grep #{php_version}"
 end
