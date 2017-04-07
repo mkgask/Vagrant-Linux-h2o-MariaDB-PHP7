@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 if node[:dir_user_home].nil? || node[:dir_user_home].empty?
-    dir_user_home = '/home/vagrant'
+    dir_user_home = '/home/ubuntu'
 else
     dir_user_home = node[:dir_user_home]
     unless dir_user_home.end_with?("/") then
@@ -38,7 +38,7 @@ cd #{dir_tmp}
 wget -O mysqlenv.tar.gz https://github.com/shim0mura/mysqlenv/archive/master.tar.gz
 tar zxvf mysqlenv.tar.gz
 mv mysqlenv-master #{dir_user_home}.mysqlenv
-chown -R vagrant:vagrant #{dir_user_home}.mysqlenv
+chown -R ubuntu:ubuntu #{dir_user_home}.mysqlenv
 echo 'export PATH="#{dir_user_home}.mysqlenv:$PATH"' |tee -a #{dir_user_home}.bashrc
 echo 'eval "$(mysqlenv init -)"' |tee -a #{dir_user_home}.bashrc
 cd #{dir_user_home}
@@ -53,7 +53,7 @@ wget -O mysql-build.tar.gz https://github.com/kamipo/mysql-build/archive/master.
 tar zxvf mysql-build.tar.gz
 mv mysql-build-master mysql-build
 mv mysql-build #{dir_user_home}.mysqlenv
-chown -R vagrant:vagrant #{dir_user_home}.mysqlenv/mysql-build
+chown -R ubuntu:ubuntu #{dir_user_home}.mysqlenv/mysql-build
 cd #{dir_user_home}
 EOH
     not_if "ls -la #{dir_user_home}.mysqlenv/mysql-build |grep bin"
@@ -70,7 +70,7 @@ execute 'mysqlenv settings' do
     command <<-"EOH"
 export PATH=#{dir_user_home}.mysqlenv:$PATH; eval "$(mysqlenv init -)"; mysqlenv install #{mysql_version}
 export PATH=#{dir_user_home}.mysqlenv:$PATH; eval "$(mysqlenv init -)"; mysqlenv global #{mysql_version}
-chown -R vagrant:vagrant #{dir_user_home}.mysqlenv
+chown -R ubuntu:ubuntu #{dir_user_home}.mysqlenv
 EOH
 end
 
